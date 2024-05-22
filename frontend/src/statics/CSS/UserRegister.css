@@ -1,0 +1,139 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #15202b; /* Twitter's dark mode background color */
+    color: #ffffff;
+    background-image: url('../images/black_dark_gray_hd_gray.jpg');
+    background-size: 100%; /* Adjust the size of the background image */
+    background-position: center;
+    background-color: #15202b;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #212224; /* Twitter's dark mode background color */
+    color: #ffffff;
+    /* background-image: url('../images/black_dark_gray_hd_gray.jpg'); */
+    background-size: 100%; /* Adjust the size of the background image */
+   
+}
+
+.container {
+    display: flex;
+    flex-direction: column; /* Align items vertically */
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.form {
+    background-color: rgba(61, 61, 61, 0.297); /* Darker background for the form */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 80%; /* Adjust the width as needed */
+    max-width: 400px; /* Optionally, set a maximum width */
+    margin-top: -150px; /* Move the form further upward */
+}
+
+h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    text-align: center;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 24px; /* Increase the font size */
+    font-family: 'Arial', sans-serif; /* Change the font family */
+    font-weight: bold; /* Make the text bolder */
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+button {
+    width: 100%; /* Make inputs and button full width */
+    padding: 10px;
+    margin-bottom: 10px;
+    border: none;
+    border-radius: 5px;
+    
+}
+
+button {
+    background-color: rgba(25, 39, 52, 0.8); /* Twitter's brand color */
+    color: #ffffff;
+   
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #2f3031; /* Darker shade on hover */
+}
+
+input:focus,
+button:focus {
+    outline: none;
+}
+
+.social_connect {
+    margin-bottom: 20px; /* Add some spacing between "Social Connect" and the form */
+}
+
+a {
+    color: skyblue;
+    text-decoration: underline;
+}
+
+}
+
+.form {
+    background-color: rgba(0, 0, 0, 0.297); /* Darker background for the form */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 80%; /* Adjust the width as needed */
+    max-width: 400px; /* Optionally, set a maximum width */
+    margin-top: -150px; /* Move the form further upward */
+}
+
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+button {
+    width: 96%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: none;
+    border-radius: 5px;
+}
+
+button {
+    background-color: #1da1f2; /* Twitter's brand color */
+    color: #ffffff;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+button:hover {
+    background-color: #0d8eff; /* Darker shade on hover */
+}
+
+input:focus,
+button:focus {
+    outline: none;
+}
+
+
+a {
+    color: skyblue;
+    text-decoration: underline;
+}

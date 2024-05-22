@@ -1,0 +1,91 @@
+.post-container {
+    height: 100vh;
+    margin-left: 10px;
+}
+
+.post-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px; /* Adds spacing between buttons */
+}
+
+.vertical-button {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    transition: background-color 0.3s; /* Add a transition for hover effects */
+}
+
+.vertical-button i {
+    margin-right: 10px;
+}
+
+.vertical-button span {
+    font-size: 16px;
+}
+
+.vertical-button:hover {
+    background-color: rgba(0, 0, 0, 0.1); /* Add a hover effect */
+}
+
+.small-circle-img {
+    width: 40px; /* Set width and height to twice the radius */
+    height: 40px;
+    border-radius: 50%; /* Make it a circle */
+    object-fit: cover;
+}
+
+.link-no-underline {
+    text-decoration: none;
+    color: inherit; /* Ensures the link inherits the text color */
+}
+
+@media (max-width: 768px) {
+    .post-buttons {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .vertical-button {
+        padding: 10px;
+        margin: 5px;
+        flex: 1 1 calc(50% - 10px); /* Adjusts the width of each button */
+    }
+
+    .small-circle-img {
+        width: 30px;
+        height: 30px;
+    }
+
+    .vertical-button span {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .post-buttons {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .vertical-button {
+        padding: 8px;
+        margin: 5px;
+        flex: 1 1 calc(100% - 10px); /* Adjusts the width of each button */
+    }
+
+    .small-circle-img {
+        width: 25px;
+        height: 25px;
+    }
+
+    .vertical-button span {
+        font-size: 12px;
+    }
+}

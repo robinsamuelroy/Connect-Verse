@@ -1,0 +1,23 @@
+/* HomePage.css */
+
+.home-page {
+    display: flex; /* Use Flexbox to arrange items horizontally */
+  }
+  
+  .left-bar {
+    flex: 0 0 200px; /* Set the width of the LeftBar */
+  }
+  
+  .main-content {
+    flex: 1; /* Allow the main content to grow and take up remaining space */
+     /* Use Flexbox to arrange items vertically */
+  }
+  
+  .right-bar {
+    flex: 0 0 200px; /* Set the width of the RightBar */
+  }
+  body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* Prevent scrolling */
+}

@@ -1,0 +1,58 @@
+.post-container {
+    border-radius: 20px ;
+    margin-bottom: 20px;
+    padding: 60px;
+    background-color: rgb(24, 24, 24);
+   
+    
+}
+
+.post::-webkit-scrollbar {
+    display: none; /* Hide the scrollbar */
+}
+
+
+.post_buttons {
+    display: flex; /* Use Flexbox to arrange items horizontally */
+  }
+
+.post_buttons button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.post_buttons button i {
+    font-size: 20px; /* Adjust the size of the icons as needed */
+    color: #333; /* Adjust the color of the icons as needed */
+    transition: color 0.3s ease;
+}
+
+.post_buttons button:hover i {
+    color: #ff5252; /* Change the color of the icons on hover */
+}
+
+
+.comment-section {
+    display: none;
+    margin-top: 10px;
+}
+
+.share-popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ccc;
+    z-index: 999;
+}
+
+.hidden {
+    display: none;
+}
+
+

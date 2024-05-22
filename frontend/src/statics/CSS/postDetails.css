@@ -1,0 +1,3 @@
+.pic::-webkit-scrollbar {
+    display: none; /* Hide the scrollbar */
+}

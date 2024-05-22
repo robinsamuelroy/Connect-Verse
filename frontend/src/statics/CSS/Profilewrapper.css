@@ -1,0 +1,13 @@
+.profile-wrapper {
+    display: flex;
+  }
+  
+  .left-bar {
+    flex: 0 0 200px; /* Set the width of the LeftBar */
+  }
+  
+  .right-content {
+    flex: 1; /* Allow the right content to take up the remaining space */
+    padding: 20px; /* Add padding for spacing */
+  }
+  
