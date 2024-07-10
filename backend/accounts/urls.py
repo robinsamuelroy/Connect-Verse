@@ -2,8 +2,8 @@
 from django.contrib import admin
 from django.urls import path
 from . import views 
-from . views import EditUserView
-from . views import UserDetailsView,AllUserDetailsView,SpecificUserDetails,CurrentUser,searchUserView
+from . views import EditUserView,BlockedUsers
+from . views import UserDetailsView,AllUserDetailsView,SpecificUserDetails,CurrentUser,searchUserView,blockUser
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -32,6 +32,8 @@ urlpatterns = [
     path('current-user/',CurrentUser.as_view(),name='current-user'),
     path('edit-user/', EditUserView.as_view(),name = 'edit-user'),
     path('search/', searchUserView.as_view(), name='search_users'),
+    path('block-user/<int:id>', blockUser.as_view(), name='search_users'),
+    path('blocked-users/', BlockedUsers.as_view(), name='blocked-users'),
 ]
 
 if settings.DEBUG:

@@ -5,7 +5,7 @@ from .models import Posts,Follow,Comment
 from .serializers import ImagePostSerializer,PostsSerializer,FollowSerializer,PostSerializer,FollowingDetails
 from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
-from accounts.models import User
+from accounts.models import User,BlockUser
 from accounts.serializers import AllUserSerializer
 from django.http import JsonResponse
 from django.utils import timezone
@@ -85,8 +85,10 @@ class followersPost(APIView):
 
     def get(self, request):
         user = request.user
-        following = Follow.objects.filter(follower=user)
+        blocked_user_ids = BlockUser.objects.filter(blocker=user).values_list('blocked', flat=True)
+        following = Follow.objects.filter(follower=user).exclude(following__id__in=blocked_user_ids)
         posts_data = []
+    
 
         for follow_obj in following:
             second_user = follow_obj.following  # Get the second user
@@ -94,12 +96,13 @@ class followersPost(APIView):
             user_data = AllUserSerializer(second_user).data
             user_posts_data = PostsSerializer(second_user_posts, many=True).data
             
+            
             for post_data in user_posts_data:
+                liked = Posts.objects.filter(id=post_data['id'], likes=user).exists()
                 post_data_with_author = {
                     'author_first_name': user_data['first_name'],
                     'author_display_pic': user_data['display_pic'],
-                    
-                    
+                    'liked': liked,
                     **post_data  # Include all other post data
                 }
                 posts_data.append(post_data_with_author)

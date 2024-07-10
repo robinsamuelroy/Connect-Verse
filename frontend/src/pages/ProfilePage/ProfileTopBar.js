@@ -7,6 +7,7 @@ import LeftBar from '../HomePage/LeftBar';
 import { Link, useParams } from 'react-router-dom';
 import default_pro_pic from '../../statics/images/profile.png';
 import '../../statics/CSS/Chat.css'
+import BlockList from './BlockList';
 
 function ProfileTopBar({isEditProfileOpen , setIsEditProfileOpen}) {
   const data= useSelector(state => state.user_basic_details.userProfile);
@@ -18,6 +19,11 @@ function ProfileTopBar({isEditProfileOpen , setIsEditProfileOpen}) {
   const [followingIds, setFollowingIds] = useState([]);
   const [button,setButton]=useState(true);
   const [totalCounts,setotalCounts] = useState([]);
+  const [showModal,setShowModal] = useState(false);
+  const [blockButton,setBlockButton] = useState(false);
+  const [blockedList,setBlockedList] =useState(false);
+
+
  
  
   const handleEditButton = () =>{
@@ -58,7 +64,7 @@ function ProfileTopBar({isEditProfileOpen , setIsEditProfileOpen}) {
                 }
             }
         );
-        const res = await axios.post(`${BASE_URL}/chat/create-room/${user.id}/`,{
+        const res = await axios.post(`${BASE_URL}/chat/create-room/${id}/`,{
           other_user_id : user.id
         },{
           headers : {
@@ -69,6 +75,7 @@ function ProfileTopBar({isEditProfileOpen , setIsEditProfileOpen}) {
         fetchData();
         followFetch();
         fetchTotalCount();
+        
     } catch (error) {
         console.error("Error following user:", error);
     }
@@ -83,7 +90,11 @@ function ProfileTopBar({isEditProfileOpen , setIsEditProfileOpen}) {
     if (res.status === 200){
       if (res.data.id == id){
           setButton(false)
+          setBlockButton(false)
 
+      }
+      else{
+        setBlockButton(true)
       }
     }
     
@@ -162,39 +173,88 @@ function ProfileTopBar({isEditProfileOpen , setIsEditProfileOpen}) {
     
     }
 
+    const handleBlock = async (id) => {
+      try {
+        const res = await axios.post(`${BASE_URL}/accounts/block-user/${id}`, {}, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+    
+        if (res.status === 200) {
+          console.log('unblocked');
+          alert('Unblocked successfully');
+        }
+    
+        if (res.status === 201) {
+          console.log('blocked');
+          alert('User blocked successfully');
+        }
+      } catch (error) {
+        console.error('Error blocking user:', error);
+      }
+    }
+    
+
 
   
   return (
-    <div className="profile" style={{ backgroundColor: "rgb(24, 24, 24)", display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-  <div className="profile-header">
-  <img className="profile-pic" src={user?.display_pic? `${BASE_URL}${user.display_pic}` : default_pro_pic} alt="Profile Picture" style={{ margin: 'auto' }} />
+
+    
+  <div className="profile" style={{ backgroundColor: "rgb(24, 24, 24)", display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+  
+  <div className="profile-header" style={{ display: 'flex', justifyContent: 'space-between', width: '100%', padding: '1rem' }}>
+    <div style={{ flexGrow: 1 }}></div>
+
+    
+    <div className="settings-icon">
+          <button onClick={()=>setShowModal(true)}>
+            <i className="fa fa-cog text-gray-600 text-xl cursor-pointer" aria-hidden="true"></i>
+          </button>
+          {showModal && (
+        <div className="modal-overlay mt-5">
+          <div className="modal-content">
+          { blockButton ? (
+          <button onClick = {()=> handleBlock(user?.id)}>Block User</button>):(
+            <button onClick = {()=>setBlockedList(true)}>Blocked Users</button>
+          )
+          }
+            <button onClick={() => {setShowModal(false)
+              setBlockedList(false)}}><i className="fa fa-times" aria-hidden="true"></i></button>
+          
+          </div>
+        </div>
+      )}
+        </div>
+  </div>
+  <div className="profile-pic-container">
+    <img className="profile-pic" src={user?.display_pic ? `${BASE_URL}${user.display_pic}` : default_pro_pic} alt="Profile Picture" style={{ margin: 'auto' }} />
   </div>
   <h2 className="profile-name">{user?.first_name || "Loading..."}</h2>
   <div style={{ display: 'flex' }}>
-  {button && (
-  <>
-    {followButton && (
-      <button className="edit-button" onClick={() => handleFollow(user?.id)}>
-        Follow
-      </button>
+    {button && (
+      <>
+        {followButton && (
+          <button className="edit-button ml-3" onClick={() => handleFollow(user?.id)}>
+            Follow
+          </button>
+        )}
+        {unfollowButton && (
+          <button
+            className="edit-button ml-8"
+            onClick={() => handleUnFollow(user?.id)}
+            style={{ width: "200%", backgroundColor: "#333", color: "#fff" }}
+          >
+            Following
+          </button>
+        )}
+      </>
     )}
-    {unfollowButton && (
-     <button
-     className="edit-button"
-     onClick={() => handleUnFollow(user?.id)}
-     style={{ width: "200%", backgroundColor: "#333", color: "#fff" }}
-   >
-     Following
-   </button>
-  
-    )}
-  </>
-)}
-<Link   to=''  >
-{!button &&
-  <button className="edit-button" onClick = {handleEditButton} style={{width:"200%" ,marginLeft:'-40px'}}>Edit Profile</button>
-}
-</Link>
+    <Link to=''>
+      {!button &&
+        <button className="edit-button" onClick={handleEditButton} style={{ width: "200%", marginLeft: '-40px' }}>Edit Profile</button>
+      }
+    </Link>
   </div>
   <div className="stats">
     <div className="stat">
@@ -210,6 +270,16 @@ function ProfileTopBar({isEditProfileOpen , setIsEditProfileOpen}) {
       <div className="stat-label">Following</div>
     </div>
   </div>
+  {
+  blockedList && (
+   
+    <div className="fixed inset-0 flex  justify-center bg-opacity-50 backdrop-blur "> 
+    <BlockList block={blockedList} setBlock={setBlockedList}/>
+    </div>
+    
+  )
+}
+  
 </div>
 
 

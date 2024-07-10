@@ -36,7 +36,7 @@ function Posts({setPostId}) {
          if (response.status === 200 ){
           console.log("id's",response.data)
          }
-            
+        
         fetchData();
     }
     
@@ -82,7 +82,7 @@ function Posts({setPostId}) {
                             )} */}
 
                         <button className="love-button" onClick={()=>handleLike(post.id)}>
-                            <i className={`fas fa-heart${post.likes && post.likes.length ? '' : '-broken'}`} style={{ color: post.likes && post.likes.length ? 'red' : ' ' }} ></i>
+                            <i className={`fas fa-heart${post.liked ? '' : '-broken'}`} style={{ color: post.liked ? 'red' : ' ' }} ></i>
                         </button>
 
 

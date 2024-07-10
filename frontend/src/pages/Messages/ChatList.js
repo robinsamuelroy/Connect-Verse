@@ -31,10 +31,12 @@ const roomFetch = async () => {
       Authorization: `Bearer ${token}`
     }
   });
-    if (res.status === 200){
+    if (res.status === 200 ){
             console.log("chatroomdata",res.data)
             setUsers(res.data)
-          }       
+          } 
+          
+
 
 }
 

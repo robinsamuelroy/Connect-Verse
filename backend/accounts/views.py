@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .serializers import UserRegisterSerializer,userserializer,UserSerializer,AllUserSerializer
+from .serializers import UserRegisterSerializer,userserializer,UserSerializer,AllUserSerializer,BlockUserSerializer
 from rest_framework import status
 from rest_framework import permissions,status,generics
 from rest_framework.response import Response
@@ -11,12 +11,14 @@ from .models import  User
 from django.contrib.auth import authenticate
 from rest_framework.permissions import IsAuthenticated
 from django.utils.crypto import get_random_string
-from . models import User
+from . models import User,BlockUser
 import random
 from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404
 from django.core.files.base import ContentFile
 from django.http import JsonResponse
+from django.core.serializers import serialize
+from post.models import Follow
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -252,9 +254,40 @@ class EditUserView(APIView):
 class searchUserView(APIView):
     permission_classes=[IsAuthenticated]
     def get(self,request):
+        user=request.user
         query = request.GET.get('q','')
+        blocked_user_ids = BlockUser.objects.filter(blocker=user).values_list('blocked_id', flat=True)
+        
         if query:
-            users = User.objects.filter(first_name__icontains=query) 
+            users = User.objects.filter(first_name__icontains=query).exclude(id__in=blocked_user_ids) 
             user_data = [{"id": user.id, "username": user.username, "pro_pic":user.display_pic.url if user.display_pic else None } for user in users]
             return JsonResponse(user_data,safe=False)
         return JsonResponse([],safe=False)
+    
+class blockUser(APIView):
+    permission_classes=[permissions.IsAuthenticated]
+    def post(self,request,id):
+        try:
+            blocking_user = User.objects.get(pk=id)
+        except User.DoesNotExist:
+            return Response({'error': 'User does not exist'}, status=status.HTTP_404_NOT_FOUND)
+        
+        blocked_by = request.user
+        
+        # Check if the block relationship already exists
+        if BlockUser.objects.filter(blocked=blocking_user, blocker=blocked_by).exists():
+            block= BlockUser.objects.filter(blocked=blocking_user, blocker=blocked_by)
+            block.delete()
+            return Response({'status': 'unblocked'}, status=status.HTTP_200_OK)
+
+        else:
+            block = BlockUser.objects.create(blocked=blocking_user, blocker=blocked_by)
+        return Response({'status': 'User blocked successfully'}, status=status.HTTP_201_CREATED)
+        
+class BlockedUsers(APIView):
+    permission_classes=[permissions.IsAuthenticated]
+    def get(self,request):
+        user=request.user
+        blocked_users=BlockUser.objects.filter(blocker=user.id)
+        serializer = BlockUserSerializer(blocked_users, many=True)  # Serialize the queryset
+        return Response(serializer.data)

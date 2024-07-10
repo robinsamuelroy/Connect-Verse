@@ -6,7 +6,8 @@ from .serialziers import  *
 from rest_framework.response import Response
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
-
+from accounts.models import BlockUser
+from post.models import *
 
 User = get_user_model()
 
@@ -72,8 +73,13 @@ class MessageSeenView(APIView):
 class ChatRoomListView(generics.ListAPIView):
     serializer_class = RoomListSerializer
     permission_classes = [permissions.IsAuthenticated]
-
+   
     def get_queryset(self):
         user = self.request.user
-        return Room.objects.filter(members=user)
+       
+        # Get IDs of users blocked by the current user
+        blocked_user_ids = BlockUser.objects.filter(blocker=user).values_list('blocked_id', flat=True)
+
+        # Filter rooms where the current user is a member and exclude rooms with any blocked members
+        return Room.objects.filter(members=user).exclude(members__id__in=blocked_user_ids).distinct()
         

@@ -9,6 +9,7 @@ function PostDetails({setPostId,postId}) {
     const [data,setData] = useState(null)
     const [liked,setLike] = useState(false)
     const [comment, setComment] = useState('');
+    const [currentUserLiked , setcurrentUserLiked]=useState(false)
 
 
     const handleLike = async()=>{
@@ -90,7 +91,7 @@ function PostDetails({setPostId,postId}) {
 
   return (
 
-    <div className="flex flex-col md:flex-row mx-auto md:mx-20">
+    <div className="flex flex-col md:flex-row mx-auto md:mx-20 mt-16">
     <div className="md:w-3/4 mx-auto md:mx-0 mb-6 md:mb-0">
       <div className="bg-stone-950 rounded-xl">
         <div className="flex flex-row p-3">

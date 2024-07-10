@@ -20,8 +20,8 @@ function RightBar() {
         navigate('/login');
     };
 
-    const handleFollow = async (id) => {
-        try {
+    const handleFollow = async (id,user) => {
+        
             await axios.post(
                 `${BASE_URL}/post/follow-user/`,
                 { following_id: id },
@@ -31,18 +31,26 @@ function RightBar() {
                     }
                 }
             );
+            const res = await axios.post(`${BASE_URL}/chat/create-room/${id}/`,{
+              other_user_id : user.id
+            },{
+              headers : {
+                Authorization: `Bearer ${token}`
+              }
+            });
             // Refresh the user data after successful follow
             fetchData();
             followFetch();
-        } catch (error) {
-            console.error("Error following user:", error);
-        }
-    };
+           
+            
+        } 
+        
+   
 
     useEffect(() => {
         fetchData();
         followFetch();
-    }, []);
+    },[]);
 
     const fetchData = async () => {
         try {
@@ -89,7 +97,7 @@ function RightBar() {
                     <div key={index} className="user-info">
                         <img src={pro?.display_pic? `${BASE_URL}${pro.display_pic}` : default_pro_pic} alt="Profile Picture" />
                         <h3>{pro.first_name}</h3>
-                        <button className="follow-button" onClick={() => handleFollow(pro.id)}>Follow</button>
+                        <button className="follow-button" onClick={() => handleFollow(pro.id,pro)}>Follow</button>
                     </div>
                     </Link>
                 ))}
